@@ -146,4 +146,29 @@
         klasę.
         
     b. **Atvirai uždaras** (_open/closed_): kiekviena klasė neribotai plečiama, bet neatskleidžia
-       _nebūtinų_ savo realizacijos ypatybių.
+       _nebūtinų_ savo realizacijos ypatybių. Čia aš miniu `private` ir `final`, `immutable`,
+       bet tas pats principas galioja ir plačiau.
+       
+    c. **Liskov pakaitumo principas**, kad poklasis idealiai atkartoja viską, ką moka paveldėti
+        _superklasė_. Java kalboje jį realizuoti praktiškai neįmanoma – todėl, kad _equals_
+        ir _compareTo_ semantika reikalauja pirmiausia patikrinti
+        `this.getClass()==that.getClass()`, o ne `that instanceof this.getClass()`.
+    
+    d. **Interfeisų segregacija** reiškia, kad mes vietoje vieno interfeiso, abstrahuojančio
+        keletą susijusių rinkinio savybių, kursime keletą atskirų, net jei tai nepraktiška.
+        Visgi, vengsime „marker interfeisų“, kurie neturi metodų arba realizacijos bus
+        verčiamos mesti `UnsupportedOperationException`.
+        
+     Pavyzdžiui, užtikrindami _consistency_, realizuojame `boolean consistent()`,
+     `void ensureConsistency()` arba `void waitForConsistency() throws InterruptedException`
+     metodus.
+     
+    e. **Priklausomybių inversija** (_dependency inversion_): objektas priklauso nuo abstrakcijų,
+       o ne realizacijų. Iš esmės tai reiškia, kad paveldėjimą iš klasės keičiame parametro
+       perdavimu konstruktoriui, o konstruktorių – _builder_ metodu.
+       
+     Pavyzdžiui: `StringList → List.of(String.class)`.
+     
+     Taip pat, `void` metodus (nors tai ir prieštarauja kai kurioms metodikoms),
+     keičiame į `return this`.
+     
