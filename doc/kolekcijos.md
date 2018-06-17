@@ -167,8 +167,9 @@
        o ne realizacijų. Iš esmės tai reiškia, kad paveldėjimą iš klasės keičiame parametro
        perdavimu konstruktoriui, o konstruktorių – _builder_ metodu.
        
-     Pavyzdžiui: `StringList → List.of(String.class)`.
+     Pavyzdžiui: `new StringList() → List.of(String.class)`,
+     arba: `new StringList("a","b","c") → List.of("a","b","c")`. 
      
      Taip pat, `void` metodus (nors tai ir prieštarauja kai kurioms metodikoms),
-     keičiame į `return this`.
+     _prasmingais atvejais_ keičiame į `return this`.
      
