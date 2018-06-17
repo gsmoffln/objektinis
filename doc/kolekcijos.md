@@ -129,10 +129,10 @@
 6. CAP arba Brewer'io teorema teigia, kad paskirstytoje duomenų struktūroje (su kuria
     vienu metu dirba daug procesų), neįmanoma užtikrinti visų šių savybių:
     
-    a. Vientisumo (_consistency_) – kad kiekviena užklausa gaus arba naujausius įrašus,
+    a. Vientisumo (_consistency_) – kad kiekviena užklausa gaus arba naujausius _pateiktus įrašymui_ įrašus,
        arba klaidos pranešimą.
        
-    b. Pasiekiamumo (_availability_) – kad kiekviena užklausa gaus paskutinius įrašytus duomenis
+    b. Pasiekiamumo (_availability_) – kad kiekviena užklausa gaus paskutinius _garantuotai išsaugotus_ duomenis
        arba klaidos pranešimą.
        
     c. Atsparumo skaidymui (_partition tolerance_) – kad struktūra išliks veikli įvykus
