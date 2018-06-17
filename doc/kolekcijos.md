@@ -99,3 +99,26 @@
     kuriuos taip pat žymėsime Java `interface` priemonėmis (kas nėra labai praktiška, bet šio
     modulio turinyje svarbu).
     
+    Įvertinsime tokius reikalavimus: ACID, CPM ir SOLID.
+    
+    a. **Atomiškumas** (_atomicity_) reiškia, kad kiekvienas pakeitimas arba įvyksta pilnai,
+       arba generuojama klaida, kuri pilnai atstato sistemos būseną į ankstesnę.
+       
+       Jei du procesai modifikuoja susijusius objektus ir įvyksta prieštaravimas, tuomet
+       arba priimama vieno iš procesų modifikacija, o kito atmetama, arba atmetamos abi.
+       
+       Pavyzdžiui, jei dviejuose procesuose didinamas autobuso ridos skaitliukas, tai 
+       reikia užtikrinti, kad **abu procesai** jį padidintų.
+       
+    b. **Vientisumas** (_consistency_): modifikuojant du atskirus, bet susijusius objektus,
+       turi būti užtikrintas jų teisingas sąryšis. Pavyzdžiui, jei modifikuojamas objektų
+       tėvo-vaiko sąryšis, tai negalime leisti, kad du nepriklausomi procesai paskelbtų
+       „anūką“ savo paties „seneliu“.
+       
+    c. **Atskirtumas** (_isolation_): procesas, keičiantis struktūrą, turi nematyti, kad
+       tą pačią struktūrą tuo pat metu keičia kitas procesas. Jis turi matyti arba sėkmingą
+       savo veiklos rezultatą, arba gauti klaidos pranešimą ir atkurtą struktūros versiją
+       (bei atnaujintą pagal sėkmingai įvykusius kito proceso pakeitimus).
+       
+    d. **Įrašomumas** (_durability_): jei procesas negauna klaidos pranešimo – **nepriklausomai
+       nuo aplinkybių** – laikoma, kad pakeitimas įvyko teisingai.
