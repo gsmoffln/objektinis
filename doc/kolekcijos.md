@@ -1,6 +1,6 @@
-#Kolekcijos
+# Kolekcijos
 
-####Terminai
+#### Terminai
  1. **`Kolekcija`, `Rinkiniu`** (angl. _„Collection“_) vadinsime objektą, kuris savyje turi
     **0, 1, …, ∞** kitų klasės **T** objektų – **`elementų`** arba **`narių`**.
  
@@ -51,7 +51,11 @@
        4. A=B & B=C → A=C, (tranzityvumas),
        5. jei A=B, tai netiesa, kad A<B, A>B ar A≠B – ir visi kiti panašūs atvejai,
        6. A>B & B>C = !A>C,
-       10000. (gal kažką pamiršau).
+       10000. (gal kažką pamiršau). **Kodėl tai svarbu**: objektai rinkinyje turės realizuoti
+       _equals_, _compareTo(other)_ ir _hashCode_ pagal šį apibrėžimą. Kaip pamatysime vėliau,
+       praktikoje neįmanoma vienu metu realizuoti ir šio santykio, ir _Liskov pakaitumo principo_
+       teigiančio, kad _poklasis_ (_subclass_, i.e. A extends B) privalo turėti identiškas
+       savybes _viršklasiui_ (_superclass_).
        
     d. **Eiliškumo** arba **rikiuotės** išlaikymas **pildant** (_sort_). Toks rinkinys visuomet išlaiko nurodytą leksikografinę
        tvarką. Pvz., į sąrašą sudėjus elementus [0, 1, 2, 3, 2, 3, 4, 2, 3], jų peržiūra grąžins [0, 1, 2, 2, 2, 3, 3, 4].
@@ -88,4 +92,10 @@
     Čia mes darome skirtumą tarp _praktinio_ taikymo ir _teorinių_ ypatybių.
     `Java Collections Framework` akcentuoja _praktinį_ taikymą, tuo tarpu mes akcentuosime
     teorinį.
-       
+    
+ 5. Kalbėdami apie modifikuojamus duomenų rinkinius, turime nepamiršti, kad juos gali keisti
+    daug procesų vienu metu. Pavyzdžiui, gali būti duomenų bazė paskirstyta per keletą
+    serverių skirtinguose žemynuose. Todėl įvardijame _sinchronizacijos_ aspektus,
+    kuriuos taip pat žymėsime Java `interface` priemonėmis (kas nėra labai praktiška, bet šio
+    modulio turinyje svarbu).
+    
