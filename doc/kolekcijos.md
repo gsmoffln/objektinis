@@ -50,7 +50,7 @@
        3. A≠B → !(A=B) → (A<B) | (B<A),
        4. A=B & B=C → A=C, (tranzityvumas),
        5. jei A=B, tai netiesa, kad A<B, A>B ar A≠B – ir visi kiti panašūs atvejai,
-       6. A>B & B>C = !A>C,
+       6. A>B & B>C ⇒ A>C,
        10000. (gal kažką pamiršau). **Kodėl tai svarbu**: objektai rinkinyje turės realizuoti
        _equals_, _compareTo(other)_ ir _hashCode_ pagal šį apibrėžimą. Kaip pamatysime vėliau,
        praktikoje neįmanoma vienu metu realizuoti ir šio santykio, ir _Liskov pakaitumo principo_
