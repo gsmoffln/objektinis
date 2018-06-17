@@ -99,7 +99,10 @@
     kuriuos taip pat žymėsime Java `interface` priemonėmis (kas nėra labai praktiška, bet šio
     modulio turinyje svarbu).
     
-    Įvertinsime tokius reikalavimus: ACID, CPM ir SOLID.
+    Įvertinsime tokius reikalavimus: ACID, CAP. Paminėsime ir SOLID, kaip atskirą objektinio
+    programavimo reikalavimą (kuris nėra tiesiogiai susijęs su duomenų rinkiniais, bet visgi
+    galioja tiek pačias struktūras realizuojantiems objektams, tiek objektams, kurie yra
+    tuose rinkiniuose).
     
     a. **Atomiškumas** (_atomicity_) reiškia, kad kiekvienas pakeitimas arba įvyksta pilnai,
        arba generuojama klaida, kuri pilnai atstato sistemos būseną į ankstesnę.
