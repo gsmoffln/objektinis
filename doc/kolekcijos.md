@@ -1,6 +1,6 @@
-#Kolekcijos
+# Kolekcijos
 
-####Terminai
+#### Terminai
  1. **`Kolekcija`, `Rinkiniu`** (angl. _„Collection“_) vadinsime objektą, kuris savyje turi
     **0, 1, …, ∞** kitų klasės **T** objektų – **`elementų`** arba **`narių`**.
  
