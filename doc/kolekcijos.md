@@ -125,3 +125,25 @@
        
     d. **Įrašomumas** (_durability_): jei procesas negauna klaidos pranešimo – **nepriklausomai
        nuo aplinkybių** – laikoma, kad pakeitimas įvyko teisingai.
+
+6. CAP arba Brewer'io teorema teigia, kad paskirstytoje duomenų struktūroje (su kuria
+    vienu metu dirba daug procesų), neįmanoma užtikrinti visų šių savybių:
+    
+    a. Vientisumo (_consistency_) – kad kiekviena užklausa gaus arba naujausius įrašus,
+       arba klaidos pranešimą.
+       
+    b. Pasiekiamumo (_availability_) – kad kiekviena užklausa gaus paskutinius įrašytus duomenis
+       arba klaidos pranešimą.
+       
+    c. Atsparumo skaidymui (_partition tolerance_) – kad struktūra išliks veikli įvykus
+       bet kokiam skaičiui klaidų.
+       
+7. SOLID principa**i** formuluojami objektiniam programavimui apskritai, bet mes jį pritaikysime
+    projektuodami (taip pat ir) duomenų rinkinių klases:
+    
+    a. **Viena atsakomybė** (_single responsibility_): vienas objektas atlieka vieną užduotį,
+        ir nieko daugiau. Jeigu mums reikia papildomo funkcionalumo, mes jį keliame į atskirą
+        klasę.
+        
+    b. **Atvirai uždaras** (_open/closed_): kiekviena klasė neribotai plečiama, bet neatskleidžia
+       _nebūtinų_ savo realizacijos ypatybių.
