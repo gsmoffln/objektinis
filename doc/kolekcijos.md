@@ -129,10 +129,10 @@
 6. CAP arba Brewer'io teorema teigia, kad paskirstytoje duomenų struktūroje (su kuria
     vienu metu dirba daug procesų), neįmanoma užtikrinti visų šių savybių:
     
-    a. Vientisumo (_consistency_) – kad kiekviena užklausa gaus arba naujausius _pateiktus įrašymui_ įrašus,
+    a. Vientisumo (_consistency_) – kad kiekviena užklausa gaus arba naujausius įrašus,
        arba klaidos pranešimą.
        
-    b. Pasiekiamumo (_availability_) – kad kiekviena užklausa gaus paskutinius _garantuotai išsaugotus_ duomenis
+    b. Pasiekiamumo (_availability_) – kad kiekviena užklausa gaus paskutinius įrašytus duomenis
        arba klaidos pranešimą.
        
     c. Atsparumo skaidymui (_partition tolerance_) – kad struktūra išliks veikli įvykus
@@ -167,9 +167,44 @@
        o ne realizacijų. Iš esmės tai reiškia, kad paveldėjimą iš klasės keičiame parametro
        perdavimu konstruktoriui, o konstruktorių – _builder_ metodu.
        
-     Pavyzdžiui: `new StringList() → List.of(String.class)`,
-     arba: `new StringList("a","b","c") → List.of("a","b","c")`. 
+     Pavyzdžiui: `StringList → List.of(String.class)`.
      
      Taip pat, `void` metodus (nors tai ir prieštarauja kai kurioms metodikoms),
-     _prasmingais atvejais_ keičiame į `return this`.
+     keičiame į `return this`.
      
+ # Konteineriai, sekos, generatoriai ir iteratoriai
+ 
+ Kaip aukščiau minėjau, kolekcijos sąvoka gerokai skiriasi tarp programavimo kalbų – o dažnai
+ ir tarp vienos kalbos standartinių bibliotekų ar netgi jų versijų (jau nekalbant apie neatitiktis
+ tarp matematinių terminų ir jų atitikmenų programavime).
+ 
+ 1. **Konteineriu** vadinsime objektą, kuris savyje talpina daug konkrečių vienos rūšies objektų
+    (baigtinį skaičių, bet nebūtinai ribotą). Pavyzdžiui, konteineris `NarvasNaminiamsGyvūnėlis` savyje talpina nuo 0 iki n
+    klasės ar interfeiso `NaminisGyvunėlis` egzempliorių, kaip: `Katiną` leopoldą, `Šunis` bielką ir strielką,
+    `Žiurkėną` rokiškį, `BanguotąjąPapūgėlę` petrauskienę.
+ 
+    Konteineris yra išvardijamasis baigtinis rinkinys. Savaime suprantama, į jį galima talpinti tik tam tikromis
+    savybėmis pasižyminčius objektus.
+ 
+    Iš atskirų konteinerio atvejų verta paminėti:
+   
+     a. `SinonimųŽodynas` savyje talpina masyvą iš struktūrų „`Pora<Žodis,Žodis[]>`“.
+     
+     b. `KompleksinisSkaičius` gali būti išreikštas kaip `Pora<RealusisSkaičius,RealusisSkaičius>`.
+     
+     c. Jeigu struktūrą `Pora` sudaro du vienos rūšies elementai, kaip (b) atveju, tai ją galima realizuoti
+        dviejų elementų masyvu.
+        
+       Ir t.t..
+ 
+    ką Java kalboje užrašome taip:
+  
+    a. `Container<Item>` reiškia tokį konteinerį, kuris turi būtent `Item` tipo objektus. Dėti į tokį konteinerį
+      galima tik `Item` klasės atstovus. Kitose kalbose ši sąlyga gali būti užtikrinama _vykdymo metu_, bet
+      Java kalboje šis apribojimas galioja tik išeities teksto _kompiliavimo_ metu dėl atgalinio suderinamumo.
+      Sukompiliuotas kodas paverčiamas **bendriniu** (_generic_) kodu (iš čia ir terminas „generics“)
+      `Container<Object>`, kas paprasčiau užrašoma tiesiog `Container`.
+      
+      Automatiniai patikrinimai gali būti vykdomi tuo ir tik tuo atveju, kai _pati konteinerio_ klasė yra
+      paveldėta iš bendrinės, pvz.: `class IntegerList extends ArrayList<Integer>` arba `class IntegerList
+      implements List<Integer>` 
