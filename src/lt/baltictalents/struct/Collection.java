@@ -9,11 +9,11 @@ package lt.baltictalents.struct;
  *  <li>Gali sukurti identišką savęs paties kopiją</li>
  * </ul>
  */
-public interface Collection<T extends Object> extends Comparable, Cloneable{
+public interface Collection<T extends Object> extends Comparable, Cloneable, Countable {
   boolean contains(T elementas);
-  int size();
-  Collection<T> clone() throws CloneNotSupportedException;
-  boolean equals(Collection kitas);
+
+  Countable clone() throws CloneNotSupportedException;
+  boolean equals(Countable kitas);
   Sequence<T> items();
 
 }

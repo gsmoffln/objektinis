@@ -2,12 +2,12 @@ package lt.baltictalents.struct;
 
 import java.util.Random;
 
-public class RandomNumbers extends AbstractCollection<Integer> {
+public abstract class RandomNumbers extends AbstractCollection<Integer> {
 
-  @Override
-  public Collection<Integer> clone() throws CloneNotSupportedException {
-    return new RandomNumbers();
-  }
+//  @Override
+//  public Countable clone() throws CloneNotSupportedException {
+//    //return new RandomNumbers();
+//  }
 
   @Override
   public Sequence items() {
@@ -38,14 +38,14 @@ public class RandomNumbers extends AbstractCollection<Integer> {
 
 
   public static void main(String[] args) {
-    Collection<Integer> col = new RandomNumbers();
-    System.out.println(col.size());
-
-    Sequence<Integer> items = col.items();
-    System.out.println(items.current());
-    System.out.println(items.current());
-    System.out.println(items.selectNext().current());
-    System.out.println(items.current());
+    //Collection<Integer> col = new RandomNumbers();
+//    System.out.println(col.size());
+//
+//    Sequence<Integer> items = col.items();
+//    System.out.println(items.current());
+//    System.out.println(items.current());
+//    System.out.println(items.selectNext().current());
+//    System.out.println(items.current());
 
 
 

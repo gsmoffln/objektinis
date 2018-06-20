@@ -50,7 +50,7 @@
        3. A≠B → !(A=B) → (A<B) | (B<A),
        4. A=B & B=C → A=C, (tranzityvumas),
        5. jei A=B, tai netiesa, kad A<B, A>B ar A≠B – ir visi kiti panašūs atvejai,
-       6. A>B & B>C = !A>C,
+       6. A>B & B>C ⇒ A>C,
        10000. (gal kažką pamiršau). **Kodėl tai svarbu**: objektai rinkinyje turės realizuoti
        _equals_, _compareTo(other)_ ir _hashCode_ pagal šį apibrėžimą. Kaip pamatysime vėliau,
        praktikoje neįmanoma vienu metu realizuoti ir šio santykio, ir _Liskov pakaitumo principo_
@@ -99,7 +99,10 @@
     kuriuos taip pat žymėsime Java `interface` priemonėmis (kas nėra labai praktiška, bet šio
     modulio turinyje svarbu).
     
-    Įvertinsime tokius reikalavimus: ACID, CPM ir SOLID.
+    Įvertinsime tokius reikalavimus: ACID, CAP. Paminėsime ir SOLID, kaip atskirą objektinio
+    programavimo reikalavimą (kuris nėra tiesiogiai susijęs su duomenų rinkiniais, bet visgi
+    galioja tiek pačias struktūras realizuojantiems objektams, tiek objektams, kurie yra
+    tuose rinkiniuose).
     
     a. **Atomiškumas** (_atomicity_) reiškia, kad kiekvienas pakeitimas arba įvyksta pilnai,
        arba generuojama klaida, kuri pilnai atstato sistemos būseną į ankstesnę.
@@ -122,3 +125,97 @@
        
     d. **Įrašomumas** (_durability_): jei procesas negauna klaidos pranešimo – **nepriklausomai
        nuo aplinkybių** – laikoma, kad pakeitimas įvyko teisingai.
+
+6. CAP arba Brewer'io teorema teigia, kad paskirstytoje duomenų struktūroje (su kuria
+    vienu metu dirba daug procesų), neįmanoma užtikrinti visų šių savybių:
+    
+    a. Vientisumo (_consistency_) – kad kiekviena užklausa gaus arba naujausius įrašus,
+       arba klaidos pranešimą.
+       
+    b. Pasiekiamumo (_availability_) – kad kiekviena užklausa gaus paskutinius įrašytus duomenis
+       arba klaidos pranešimą.
+       
+    c. Atsparumo skaidymui (_partition tolerance_) – kad struktūra išliks veikli įvykus
+       bet kokiam skaičiui klaidų.
+       
+7. SOLID principa**i** formuluojami objektiniam programavimui apskritai, bet mes jį pritaikysime
+    projektuodami (taip pat ir) duomenų rinkinių klases:
+    
+    a. **Viena atsakomybė** (_single responsibility_): vienas objektas atlieka vieną užduotį,
+        ir nieko daugiau. Jeigu mums reikia papildomo funkcionalumo, mes jį keliame į atskirą
+        klasę.
+        
+    b. **Atvirai uždaras** (_open/closed_): kiekviena klasė neribotai plečiama, bet neatskleidžia
+       _nebūtinų_ savo realizacijos ypatybių. Čia aš miniu `private` ir `final`, `immutable`,
+       bet tas pats principas galioja ir plačiau.
+       
+    c. **Liskov pakaitumo principas**, kad poklasis idealiai atkartoja viską, ką moka paveldėti
+        _superklasė_. Java kalboje jį realizuoti praktiškai neįmanoma – todėl, kad _equals_
+        ir _compareTo_ semantika reikalauja pirmiausia patikrinti
+        `this.getClass()==that.getClass()`, o ne `that instanceof this.getClass()`.
+    
+    d. **Interfeisų segregacija** reiškia, kad mes vietoje vieno interfeiso, abstrahuojančio
+        keletą susijusių rinkinio savybių, kursime keletą atskirų, net jei tai nepraktiška.
+        Visgi, vengsime „marker interfeisų“, kurie neturi metodų arba realizacijos bus
+        verčiamos mesti `UnsupportedOperationException`.
+        
+     Pavyzdžiui, užtikrindami _consistency_, realizuojame `boolean consistent()`,
+     `void ensureConsistency()` arba `void waitForConsistency() throws InterruptedException`
+     metodus.
+     
+    e. **Priklausomybių inversija** (_dependency inversion_): objektas priklauso nuo abstrakcijų,
+       o ne realizacijų. Iš esmės tai reiškia, kad paveldėjimą iš klasės keičiame parametro
+       perdavimu konstruktoriui, o konstruktorių – _builder_ metodu.
+       
+     Pavyzdžiui: `StringList → List.of(String.class)`.
+     
+     Taip pat, `void` metodus (nors tai ir prieštarauja kai kurioms metodikoms),
+     keičiame į `return this`.
+     
+ # Konteineriai, sekos, generatoriai ir iteratoriai
+ 
+ Kaip aukščiau minėjau, kolekcijos sąvoka gerokai skiriasi tarp programavimo kalbų – o dažnai
+ ir tarp vienos kalbos standartinių bibliotekų ar netgi jų versijų (jau nekalbant apie neatitiktis
+ tarp matematinių terminų ir jų atitikmenų programavime).
+ 
+ 1. **Konteineriu** vadinsime objektą, kuris savyje talpina daug konkrečių vienos rūšies objektų
+    (baigtinį skaičių, bet nebūtinai ribotą). Pavyzdžiui, konteineris `NarvasNaminiamsGyvūnėlis` savyje talpina nuo 0 iki n
+    klasės ar interfeiso `NaminisGyvunėlis` egzempliorių, kaip: `Katiną` leopoldą, `Šunis` bielką ir strielką,
+    `Žiurkėną` rokiškį, `BanguotąjąPapūgėlę` petrauskienę.
+ 
+    Konteineris yra išvardijamasis baigtinis rinkinys. Savaime suprantama, į jį galima talpinti tik tam tikromis
+    savybėmis pasižyminčius objektus.
+ 
+    Iš atskirų konteinerio atvejų verta paminėti:
+   
+     a. `SinonimųŽodynas` savyje talpina masyvą iš struktūrų „`Pora<Žodis,Žodis[]>`“.
+     
+     b. `KompleksinisSkaičius` gali būti išreikštas kaip `Pora<RealusisSkaičius,RealusisSkaičius>`.
+     
+     c. Jeigu struktūrą `Pora` sudaro du vienos rūšies elementai, kaip (b) atveju, tai ją galima realizuoti
+        dviejų elementų masyvu.
+        
+       Ir t.t..
+ 
+    ką Java kalboje užrašome taip:
+  
+    a. `Container<Item>` reiškia tokį konteinerį, kuris turi būtent `Item` tipo objektus. Dėti į tokį konteinerį
+      galima tik `Item` klasės atstovus. Kitose kalbose ši sąlyga gali būti užtikrinama _vykdymo metu_, bet
+      Java kalboje šis apribojimas galioja tik išeities teksto _kompiliavimo_ metu dėl atgalinio suderinamumo.
+      Sukompiliuotas kodas paverčiamas **bendriniu** (_generic_) kodu (iš čia ir terminas „generics“)
+      `Container<Object>`, kas paprasčiau užrašoma tiesiog `Container`.
+      
+      Automatiniai patikrinimai gali būti vykdomi tuo ir tik tuo atveju, kai _pati konteinerio_ klasė yra
+      paveldėta iš bendrinės, pvz.: `class IntegerList extends ArrayList<Integer>` arba `class IntegerList
+      implements List<Integer>`.
+      
+      Tarkime, kad originalus `List<T>` turi metodą `void add(T item)`. Šitoks užrašas `List<T>` gali būti
+      interpretuojamas kaip `List<T extends Object>`, o kompiliuojant visi laukai, metodų bei parametrai
+      konstruktorių parametrai bei vidiniai kintamieji perrašomi pakeičiant `T`→`java.lang.Object`.
+      
+      Todėl kompiliuojant 
+      
+      
+      Paveldint 
+      
+      

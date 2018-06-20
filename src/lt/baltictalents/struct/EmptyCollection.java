@@ -1,10 +1,16 @@
 package lt.baltictalents.struct;
 
-public class EmptyCollection<T> extends AbstractCollection<T>{
+import java.util.Iterator;
+
+public class EmptyCollection<T> extends AbstractCollection<T> implements Countable{
 
   @Override
-  public Collection<T> clone() throws CloneNotSupportedException{
+  public Countable clone() {
     return new EmptyCollection<>();
   }
 
+  @Override
+  public Iterator iterator() {
+    return null;
+  }
 }
