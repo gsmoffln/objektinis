@@ -120,10 +120,13 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    */
   public final void add(T... items) {
     ensureSize(this.size + items.length);
+    final long version = ++this.version;
 
     for (T item : items) {
       this.add(item);
     }
+
+    checkVersion(version);
   }
 
   /**
@@ -168,18 +171,6 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   }
 
 }
-
-class Message {
-  Date date;
-  String text;
-  User sender;
-}
-
-class User {
-  String name;
-  int ipAddress;
-}
-
 
 
 class GrowableArrayList<T> extends SimpleArrayList<T> {
