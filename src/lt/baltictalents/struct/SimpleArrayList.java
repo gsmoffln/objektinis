@@ -154,8 +154,10 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
     ensureSize(this.size + items.length);
     final long version = ++this.version;
 
-    for (T item : items) {
-      this.add(item);
+    for (int i=0, n=items.length; i<n; i++) {
+      T item = items[i];
+      this.items[size] = item;
+      size++;
     }
 
     checkVersion(version);
