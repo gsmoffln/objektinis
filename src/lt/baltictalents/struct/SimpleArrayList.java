@@ -5,6 +5,7 @@ import lt.baltictalents.struct.misc.AbstractCollection;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T> {
 
@@ -67,7 +68,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   @Override
   public String toString() {
     Object[] elementųMasyvas = this.items;
-    @SuppressWarnings("UnnecessaryLocalVariable") String masyvoTekstas = Arrays.toString(elementųMasyvas);
+    @SuppressWarnings("UnnecessaryLocalVariable") String masyvoTekstas = Arrays.toString(Arrays.copyOfRange(elementųMasyvas,0,this.size()));
 
     return masyvoTekstas;
   }
@@ -119,6 +120,20 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
     version++;
   }
 
+  // TODO: [@gsm,2018.06.21] sadsdasdasd
+
+  // FIXME: 18.6.21 dasasdasdas
+
+  public T remove() {
+    Objects.checkFromToIndex(1, this.size, this.size);
+
+    size--;
+    version++;
+
+    return (T)items[size];
+  }
+
+
   /**
    * Prideda elementą į nurodytą sąrašo pabaigą.
    * Jei sąrašas perpildytas, generuojama {@link ArrayIndexOutOfBoundsException}
@@ -127,6 +142,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    * @throws {@link IndexOutOfBoundsException} jei sąrašas jau maksimaliai užpildytas
    */
   public void add(int index, T item) {
+    Objects.requireNonNull(item, "Pridedamas elementas negali būti null.");
     ensureInRange(index, 0, this.size);
     ensureSize(this.size + 1);
 
@@ -143,6 +159,37 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
     checkVersion(version);
   }
 
+  public T remove(int index) {
+    ensureInRange(index, 0, this.size);
+    ensureInRange(this.size, 1, this.size);
+
+    long version = ++this.version;
+    size--;
+
+    T result = (T) items[index];
+    //noinspection ManualArrayCopy  -- darom taip tyčia, IDEA siūlo perrašyt su System::arraycopy()
+    for (int i = index, n = size(); i < n; i++) {
+      items[i] = items[i+1];
+    }
+
+    checkVersion(version);
+    return result;
+  }
+
+
+  /**
+   * Pakeičia elemento nr. i reikšmę.
+   * @param i
+   * @param item
+   */
+  void set(int i, T item) {
+    ensureInRange(i, 0, this.size()-1);
+    Objects.requireNonNull(item, "Nepriimu null!");
+
+    this.items[i] = item;
+    this.version++;
+  }
+
   /**
    * Prideda daug elementų į sąrašo pabaigą.
    *
@@ -151,6 +198,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    */
   @SafeVarargs
   public final void add(T... items) {
+    Objects.requireNonNull(items, "Pridedamas masyvas negali būti lygus null.");
     ensureSize(this.size + items.length);
     final long version = ++this.version;
 
@@ -162,6 +210,12 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
 
     checkVersion(version);
   }
+
+  T get(int i) {
+    ensureInRange(i, 0, size()-1);
+    return (T)this.items[i];
+  }
+
 
   /**
    * Šito reikia tam, kad galėčiau kolekciją naudoti for( : ) išraiškoje.
@@ -202,6 +256,13 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
     l2.add(4, "z4");
     l2.add(3, "z3");
     l2.add(6, "z7");
+    l2.remove();
+    l2.remove();
+    l2.remove();
+    l2.remove();
+    l2.remove();
+    l2.remove();
+    l2.remove();
 
     System.out.println(l2.toString());
   }

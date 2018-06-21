@@ -39,4 +39,29 @@ public class DynamicArrayList<T> extends SimpleArrayList<T> {
 
   }
 
+  @Override
+  public void add(T item) {
+    // TODO
+    super.add(item);
+  }
+
+  /**
+   * // TODO:
+   *
+   * Ištrina paskutinį elm., sumažina size ir grąžina pašalintą elm..
+   * @return
+   * @throws ArrayIndexOutOfBoundsException jei nėra ką išmesti
+   * @throws java.util.ConcurrentModificationException jei įvyko modifikacija iš šalies
+   */
+  @Override
+  public T remove() {
+    // TODO: [@gsm,2018.06.21] Realizuoti...
+    return super.remove();
+  }
+
+  @Override
+  public T remove(int index) {
+    return super.remove(index);
+  }
+
 }
