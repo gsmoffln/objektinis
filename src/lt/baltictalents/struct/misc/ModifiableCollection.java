@@ -1,4 +1,4 @@
-package lt.baltictalents.struct;
+package lt.baltictalents.struct.misc;
 
 public interface ModifiableCollection<T extends Object> extends Collection<T> {
   void add(T item);

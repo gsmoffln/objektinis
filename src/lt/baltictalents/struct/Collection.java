@@ -1,5 +1,8 @@
 package lt.baltictalents.struct;
 
+import lt.baltictalents.struct.misc.Countable;
+import lt.baltictalents.struct.misc.Sequence;
+
 /**
  * Abstraktus „daiktų“ rinkinys – tai gali būti objektų sąrašas, aibė, atvaizdis ir pan..
  * <ul>Jis turi tokias savybes:

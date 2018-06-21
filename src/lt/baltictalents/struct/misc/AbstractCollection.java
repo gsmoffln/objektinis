@@ -1,4 +1,6 @@
-package lt.baltictalents.struct;
+package lt.baltictalents.struct.misc;
+
+import lt.baltictalents.struct.Collection;
 
 import java.util.NoSuchElementException;
 

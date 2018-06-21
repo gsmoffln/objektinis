@@ -1,8 +1,9 @@
 package lt.baltictalents.struct;
 
+import lt.baltictalents.struct.misc.AbstractCollection;
+
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
-import java.util.Date;
 import java.util.Iterator;
 
 public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T> {
@@ -14,6 +15,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
 
   /**
    * Sukuria tuščią sąrašą su maksimalia talpa initialSize;
+   *
    * @param initialSize
    */
   public SimpleArrayList(int initialSize) {
@@ -22,14 +24,16 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
 
   /**
    * Sukuria pilnai užpildytą sąrašą iš masyvo
+   *
    * @param items elementai, kuriais užpildyti
    */
-  public SimpleArrayList(T ... items) {
+  public SimpleArrayList(T... items) {
     items = items.clone();
   }
 
   /**
    * Sukuria naują šio sąrašo kopiją
+   *
    * @return
    */
   @Override
@@ -48,9 +52,8 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   }
 
 
-
-  protected void checkVersion(long oldVersion){
-    if(version>oldVersion) {
+  protected void checkVersion(long oldVersion) {
+    if (version > oldVersion) {
       throw new ConcurrentModificationException("Kažkas modifikavo vidinį masyvą, jo kopijavimo metu.");
     }
   }
@@ -59,6 +62,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   /**
    * Patikrina, kad yra vietos sutalpinti tiek elementų.
    * Šioje paprasčiausioje realizacijoje tik nulūžta, jei nėra.
+   *
    * @param size
    * @throws IndexOutOfBoundsException jei nėra vietos.
    */
@@ -69,8 +73,8 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   }
 
   public static void ensureInRange(int what, int min, int max) {
-    if(what<min || what>max) {
-      throw new ArrayIndexOutOfBoundsException( what+" is not in range ["+min+","+max+"]");
+    if (what < min || what > max) {
+      throw new ArrayIndexOutOfBoundsException(what + " is not in range [" + min + "," + max + "]");
     }
   }
 
@@ -79,10 +83,10 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    * Jei sąrašas perpildytas, generuojama {@link ArrayIndexOutOfBoundsException}
    *
    * @param item
-   * @throws  {@link IndexOutOfBoundsException} jei sąrašas jau maksimaliai užpildytas
+   * @throws {@link IndexOutOfBoundsException} jei sąrašas jau maksimaliai užpildytas
    */
   public void add(T item) {
-    ensureSize(this.size+1);
+    ensureSize(this.size + 1);
 
     items[size] = item;
     size++;
@@ -95,17 +99,17 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    * Jei sąrašas perpildytas, generuojama {@link ArrayIndexOutOfBoundsException}
    *
    * @param item
-   * @throws  {@link IndexOutOfBoundsException} jei sąrašas jau maksimaliai užpildytas
+   * @throws {@link IndexOutOfBoundsException} jei sąrašas jau maksimaliai užpildytas
    */
   public void add(int index, T item) {
     ensureInRange(index, 0, this.size);
-    ensureSize(this.size+1);
+    ensureSize(this.size + 1);
 
     long version = ++this.version;
     size++;
 
-    for(int i=size-1; i>index; i--) {
-      items[i] = items[i-1];
+    for (int i = size - 1; i > index; i--) {
+      items[i] = items[i - 1];
     }
 
     items[index] = item;
@@ -115,6 +119,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
 
   /**
    * Prideda daug elementų į sąrašo pabaigą.
+   *
    * @param items
    * @throws ArrayIndexOutOfBoundsException jei sąrašas perpildytas.
    */
@@ -141,68 +146,36 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
 
   /**
    * grąžina surikiuotą savo paties kopiją
+   *
    * @return
    */
   @Override
   public SimpleArrayList<T> sort() {
-    Object[] items=this.items.clone();
+    Object[] items = this.items.clone();
     Arrays.sort(items);
     return new SimpleArrayList(items);
   }
 
 
-  public static void main(String... args){
+  public static void main(String... args) {
 
     SimpleArrayList<String> l = new SimpleArrayList<String>(2);  // paprasčiausiam masyvu paremtam sąrašui mes privalom nurodyti dydį ir jo neviršyti
     l.add("xxx", "yyy");                                    // todėl turime įsitikinti, kad išsiskyrėme pakankamai daug vietos iš anksto ir įvesti saugiklius perpildymui
     // l.add("zzz")         // <---- čia jau būtų perpildymo klaida
 
-    SimpleArrayList<String> l2 = new GrowableArrayList<String>(); // augantis sąrašas pasirūpina, kad visuomet būtų paruoštas pakankamai didelis masyvas
-    l2.add("xxx","yyy");  // bet mes negalime patikimai prognozuoti, kada bus išprovokuotas pilnas masyvo perkopijavimas į didesnį.
+    SimpleArrayList<String> l2 = new DynamicArrayList<String>(); // augantis sąrašas pasirūpina, kad visuomet būtų paruoštas pakankamai didelis masyvas
+    l2.add("xxx", "yyy");  // bet mes negalime patikimai prognozuoti, kada bus išprovokuotas pilnas masyvo perkopijavimas į didesnį.
     l2.add("zzz");        // todėl: a) programa gali užstrigti ilgam ir netinkamu laiku, b) kopijavimo metu prarasime KAI KURIUOS pakeitimus, kuriuos per tą laiką
-                          // atliks kitos gijos, pvz. naujus elementus
+    // atliks kitos gijos, pvz. naujus elementus
 
-    l2.add(2,"z2");
-    l2.add(4,"z4");
-    l2.add(3,"z3");
-    l2.add(6,"z7");
+    l2.add(2, "z2");
+    l2.add(4, "z4");
+    l2.add(3, "z3");
+    l2.add(6, "z7");
 
-    System.out.println( l2.toString() );
+    System.out.println(l2.toString());
   }
 
 }
 
 
-class GrowableArrayList<T> extends SimpleArrayList<T> {
-
-  /**
-   * Vietoj to, kad nulūžtų, pakeičia vidinį masyvą bent dvigubai didesniu ir toliau add() metodai veikia be lūžimų.
-   *
-   * @param size – pageidaujamas dydis.
-   */
-  @Override
-  public void ensureSize(int size){
-    if(size<0){
-      throw new IllegalArgumentException("Array size cannot be negative: "+size);
-    }
-
-    long oldVersion = ++version;
-
-    Object[] origItems = this.items;
-    if(origItems==null) {
-      this.items=new Object[size];
-      checkVersion(oldVersion);
-      return;
-    }
-
-    if( size>this.items.length*2 ) {
-      this.items = Arrays.copyOf(this.items,size);
-    }else if(size>this.items.length) {
-      this.items = Arrays.copyOf(this.items,this.items.length*2);
-    }
-
-    checkVersion(oldVersion);
-
-  }
-
-}
