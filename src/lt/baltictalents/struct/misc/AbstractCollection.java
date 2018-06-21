@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 
 
-public abstract class AbstractCollection<T> implements Collection<T>, Countable, Iterable {
+public abstract class AbstractCollection<T> implements Collection<T>, Countable, Iterable<T> {
 
   @Override
   public boolean contains(T elementas) {

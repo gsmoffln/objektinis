@@ -12,7 +12,7 @@ import lt.baltictalents.struct.misc.Sequence;
  *  <li>Gali sukurti identišką savęs paties kopiją</li>
  * </ul>
  */
-public interface Collection<T extends Object> extends Comparable, Cloneable, Countable {
+public interface Collection<T extends Object> extends Comparable<T>, Cloneable, Countable {
   boolean contains(T elementas);
 
   Countable clone() throws CloneNotSupportedException;

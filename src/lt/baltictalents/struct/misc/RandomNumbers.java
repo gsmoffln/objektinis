@@ -10,7 +10,7 @@ public abstract class RandomNumbers extends AbstractCollection<Integer> {
 //  }
 
   @Override
-  public Sequence items() {
+  public Sequence<Integer> items() {
 
     return new Sequence<Integer>() {
 

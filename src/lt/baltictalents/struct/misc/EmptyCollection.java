@@ -10,7 +10,7 @@ public class EmptyCollection<T> extends AbstractCollection<T> implements Countab
   }
 
   @Override
-  public Iterator iterator() {
+  public Iterator<T> iterator() {
     return null;
   }
 }
