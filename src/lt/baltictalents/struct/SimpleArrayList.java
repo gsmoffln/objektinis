@@ -24,16 +24,37 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   }
 
   /**
+   * Nuosekliąja paieška randa, ar yra bent vienas elementas items[i].equals(item)
+   * @param item ko ieškom
+   * @return {@true}, kai tik randa pirmą arba {@code false} jei neranda peržiūrėjus visus elementus
+   */
+  @Override
+  public boolean contains(T item) {
+    for(int i=0, n=size(); i<n; i++) {
+      if(items[i].equals(item)) return true;
+    }
+    return false;
+  }
+
+  /**
+   * @return tikras dydis, o ne paveldėtas iš tuščios kolekcijos
+   */
+  @Override
+  public int size() {
+    return this.size;
+  }
+
+  /**
    * Sukuria pilnai užpildytą sąrašą iš masyvo
    *
    * @param items elementai, kuriais užpildyti
    */
   public SimpleArrayList(T... items) {
-    items = items.clone();
+    this.items = items.clone();
   }
 
   /**
-   * Sukuria naują šio sąrašo kopiją
+   * Sukuria naują šio sąrašo kopiją su nauju masyvu.
    *
    * @return
    */
@@ -47,12 +68,16 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
   @Override
   public String toString() {
     Object[] elementųMasyvas = this.items;
-    String masyvoTekstas = Arrays.toString(this.items);
+    @SuppressWarnings("UnnecessaryLocalVariable") String masyvoTekstas = Arrays.toString(elementųMasyvas);
 
     return masyvoTekstas;
   }
 
 
+  /**
+   * Patikrina, ar pakeitimo
+   * @param oldVersion
+   */
   protected void checkVersion(long oldVersion) {
     if (version > oldVersion) {
       throw new ConcurrentModificationException("Kažkas modifikavo vidinį masyvą, jo kopijavimo metu.");
@@ -73,7 +98,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
     }
   }
 
-  public static void ensureInRange(int what, int min, int max) {
+  protected static void ensureInRange(int what, int min, int max) {
     if (what < min || what > max) {
       throw new ArrayIndexOutOfBoundsException(what + " is not in range [" + min + "," + max + "]");
     }
@@ -109,6 +134,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
     long version = ++this.version;
     size++;
 
+    //noinspection ManualArrayCopy  -- darom taip tyčia, IDEA siūlo perrašyt su System::arraycopy()
     for (int i = size - 1; i > index; i--) {
       items[i] = items[i - 1];
     }
@@ -124,12 +150,15 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    * @param items
    * @throws ArrayIndexOutOfBoundsException jei sąrašas perpildytas.
    */
+  @SafeVarargs
   public final void add(T... items) {
     ensureSize(this.size + items.length);
     final long version = ++this.version;
 
-    for (T item : items) {
-      this.add(item);
+    for (int i=0, n=items.length; i<n; i++) {
+      T item = items[i];
+      this.items[size] = item;
+      size++;
     }
 
     checkVersion(version);
@@ -150,6 +179,7 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
    *
    * @return
    */
+  @SuppressWarnings("unchecked") // needs to clone generic T[]
   @Override
   public SimpleArrayList<T> sort() {
     Object[] items = this.items.clone();
@@ -160,11 +190,11 @@ public class SimpleArrayList<T> extends AbstractCollection<T> implements List<T>
 
   public static void main(String... args) {
 
-    SimpleArrayList<String> l = new SimpleArrayList<String>(2);  // paprasčiausiam masyvu paremtam sąrašui mes privalom nurodyti dydį ir jo neviršyti
+    SimpleArrayList<String> l = new SimpleArrayList<>(2);  // paprasčiausiam masyvu paremtam sąrašui mes privalom nurodyti dydį ir jo neviršyti
     l.add("xxx", "yyy");                                    // todėl turime įsitikinti, kad išsiskyrėme pakankamai daug vietos iš anksto ir įvesti saugiklius perpildymui
     // l.add("zzz")         // <---- čia jau būtų perpildymo klaida
 
-    SimpleArrayList<String> l2 = new DynamicArrayList<String>(); // augantis sąrašas pasirūpina, kad visuomet būtų paruoštas pakankamai didelis masyvas
+    SimpleArrayList<String> l2 = new DynamicArrayList<>(); // augantis sąrašas pasirūpina, kad visuomet būtų paruoštas pakankamai didelis masyvas
     l2.add("xxx", "yyy");  // bet mes negalime patikimai prognozuoti, kada bus išprovokuotas pilnas masyvo perkopijavimas į didesnį.
     l2.add("zzz");        // todėl: a) programa gali užstrigti ilgam ir netinkamu laiku, b) kopijavimo metu prarasime KAI KURIUOS pakeitimus, kuriuos per tą laiką
     // atliks kitos gijos, pvz. naujus elementus
