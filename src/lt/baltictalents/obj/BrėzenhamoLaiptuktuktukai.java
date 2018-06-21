@@ -2,7 +2,6 @@ package lt.baltictalents.obj;
 
 import java.io.*;
 
-@SuppressWarnings("Since15") // naudosim Java galimybes ≥ 1.5, nuraminam IDEA, kad nesinervintų
 public class BrėzenhamoLaiptuktuktukai {
   /**
    * Čia piešime paveikslą.
