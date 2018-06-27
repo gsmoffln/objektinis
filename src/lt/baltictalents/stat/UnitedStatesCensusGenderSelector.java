@@ -19,12 +19,13 @@ public class UnitedStatesCensusGenderSelector implements DistributedFunction<Gen
 
     public static void main(String[] args) {
         DistributedFunction<Gender> gender = new UnitedStatesCensusGenderSelector();
-        System.out.println(gender.select(0.1));
-        System.out.println(gender.select(0.48));
-        System.out.println(gender.select(0.5));
-        System.out.println(gender.select(0.9));
-        System.out.println(gender.select(100.0));
+        System.out.println(gender.select(0.1));  //MALE
+        System.out.println(gender.select(0.48)); //MALE
+        System.out.println(gender.select(0.5));  //FEMALE
+        System.out.println(gender.select(0.9));  //FEMALE
+        System.out.println(gender.select(100.0));//Exception
 
     }
 
 }
+
