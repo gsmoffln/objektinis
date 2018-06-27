@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public class UnitedStatesAgeDistribution implements DistributedFunction<Integer> {
     private static final int[] totalPopulationByAge = {
-            3944153,
-            3978070,
-            4096929,
-            4119040,
+            3944153, // natals
+            3978070, // age 1
+            4096929, // age 2
+            4119040, // etc.
             4063170,
             4056858,
             4066381,
