@@ -2,6 +2,6 @@ package Naujas.Projektas;
 
 public class Mindaugas {
   public static void main(String[] args) {
-    System.out.println("prikakojau");
+    System.out.println("paredagavau");
   }
 }
