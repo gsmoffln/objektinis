@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Objektinis.iml" filepath="$PROJECT_DIR$/Objektinis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/objektinis.iml" filepath="$PROJECT_DIR$/objektinis.iml" />
     </modules>
   </component>
 </project>
