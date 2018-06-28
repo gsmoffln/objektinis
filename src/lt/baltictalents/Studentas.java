@@ -170,6 +170,7 @@ public class Studentas implements Comparable<Studentas>{
                 //System.out.println("TRUMPAS !!!!!");
                 if(stud[0]==(trumpas)) {
                     System.out.println("TRUMPAS !!!!!");
+                    System.out.println("Bandymas daryti pakeitimus ir pull request!");
                 } // else .......
 //                ....
 //                ....
@@ -180,3 +181,4 @@ public class Studentas implements Comparable<Studentas>{
 
     }
 }
+//o komentarai? turetu irgi buti traktuojami kaip failo pakeitimas!
